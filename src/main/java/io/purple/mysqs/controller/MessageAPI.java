@@ -4,6 +4,7 @@ import com.amazonaws.services.sqs.model.Message;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.purple.mysqs.service.AmazonSQSSender;
+import lombok.RequiredArgsConstructor;
 import org.springframework.cloud.aws.messaging.listener.annotation.SqsListener;
 import org.springframework.messaging.handler.annotation.Headers;
 import org.springframework.messaging.handler.annotation.Payload;
@@ -13,25 +14,15 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
 
+@RequiredArgsConstructor
 @RestController
 public class MessageAPI {
-    private final ObjectMapper objectMapper;
-    private final AmazonSQSSender amazonSQSSender;
 
-    public MessageAPI(ObjectMapper objectMapper, AmazonSQSSender amazonSQSSender) {
-        this.objectMapper = objectMapper;
-        this.amazonSQSSender = amazonSQSSender;
-    }
+    private final AmazonSQSSender messageSender;
 
-    @PostMapping("/api/v1/send")
-    public String send(@RequestBody Message message)  throws JsonProcessingException {
-        amazonSQSSender.sendMessage(message);
+    @PostMapping("/api/v2/send")
+    public String sendMessage(@RequestBody String message) {
+        messageSender.sendMessage(message);
         return "success";
     }
-
-//    @SqsListener(value = "${cloud.aws.sqs.queue.name}")
-//    private void receiveMessage(@Headers Map<String,String> header, @Payload String message) throws  JsonProcessingException {
-//        Message readValue = objectMapper.readValue(message, Message.class);
-//        System.out.println(readValue.getBody());
-//    }
 }

@@ -9,5 +9,4 @@ cloud:
       auto: false
     sqs:
       queue:
-        name: ${SQS_QUEUE_NAME}
-        url: ${SQS_QUEUE_URL}
+        name: ${SQS_QUEUE_NAME2}
