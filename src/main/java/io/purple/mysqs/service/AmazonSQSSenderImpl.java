@@ -21,6 +21,9 @@ public class AmazonSQSSenderImpl implements AmazonSQSSender{
         SendMessageRequest sendMessageRequest = new SendMessageRequest(properties.getUrl(), objectMapper.writeValueAsString(msg))
                 .withMessageGroupId("group-1")
                 .withMessageDeduplicationId(UUID.randomUUID().toString());
+        // SQS에서 콘텐츠 기반 중복 제거 옵션 활성화하면 위에 UUID 값 주지 않아도 된다.
+//        SendMessageRequest sendMessageRequest = new SendMessageRequest(properties.getUrl(), objectMapper.writeValueAsString(msg))
+//                .withMessageGroupId("group-1");
         return amazonSQS.sendMessage(sendMessageRequest);
     }
 
