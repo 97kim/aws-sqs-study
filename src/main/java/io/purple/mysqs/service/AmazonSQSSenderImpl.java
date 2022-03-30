@@ -6,6 +6,7 @@ import com.amazonaws.services.sqs.model.SendMessageRequest;
 import com.amazonaws.services.sqs.model.SendMessageResult;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.purple.mysqs.dto.MessageDto;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.aws.messaging.core.QueueMessagingTemplate;
 import org.springframework.messaging.Message;
@@ -28,8 +29,8 @@ public class AmazonSQSSenderImpl implements AmazonSQSSender {
     }
 
     @Override
-    public void sendMessage(String message) {
-        Message<String> newMessage = MessageBuilder.withPayload(message).build();
+    public void sendMessage(MessageDto message) {
+        Message<MessageDto> newMessage = MessageBuilder.withPayload(message).build();
         queueMessagingTemplate.send(queueName, newMessage);
     }
 }
